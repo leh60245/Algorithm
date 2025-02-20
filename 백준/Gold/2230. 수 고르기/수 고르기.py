@@ -1,20 +1,25 @@
 import sys
-# sys.stdin = open("input.txt", "r")
 
-N, M = map(int, input().split())
-arr = list()
-for _ in range(N):
-    arr.append(int(input()))
-arr.sort()
+def min_difference(n, m, arr):
+    arr.sort()
+    mn = float('inf')
+    en = 0
 
-p, q = 0, 0
-ans = sys.maxsize
-while q < N and p < N:
-    tmp = arr[q] - arr[p]
-    if tmp < M:
-        q += 1
-    else:
-        p += 1
-        ans = min(ans, tmp)
+    for st in range(n):
+        while en < n and arr[en] - arr[st] < m:
+            en += 1
+        if en < n:  # en이 범위를 벗어나지 않을 경우만 최소값 갱신
+            mn = min(mn, arr[en] - arr[st])
 
-print(ans)
+    return mn if mn != float('inf') else 0
+
+if __name__ == "__main__":
+    # with open("input.txt", "r") as file:
+    #     data = list(map(int, file.read().split()))
+
+    input = sys.stdin.read
+    data = list(map(int, input().split()))
+    
+    n, m, *arr = data  # 리스트 언패킹
+
+    print(min_difference(n, m, arr))
