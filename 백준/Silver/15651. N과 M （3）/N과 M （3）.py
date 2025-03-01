@@ -7,18 +7,20 @@ except FileNotFoundError:
 
 input = sys.stdin.readline
 N, M = map(int, input().split())
+arr = [0 for _ in range(M)]
 
 
-def backtracking(path):
-    if len(path) == M:
-        print(*path)
+def backtracking(cnt):
+    if cnt == M:
+        print(*arr) 
         return
     for i in range(N):
-        backtracking(path + [i + 1])
+        arr[cnt] = i + 1
+        backtracking(cnt+1)
 
 
 def main():
-    backtracking([])
+    backtracking(0)
 
 
 if __name__ == "__main__":
