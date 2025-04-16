@@ -3,7 +3,7 @@ using namespace std;
 
 
 
-int a[20], n, m, l;
+int a[20], n, m;
 int main()
 {
     ios::sync_with_stdio(0);
@@ -14,8 +14,7 @@ int main()
     for (int i=0;i<10;i++)
     {
         cin >> n >> m;
-        l = (m-n+1)/2;
-        for (int j=0 ; j < l; j++) swap(a[n+j-1], a[m-1-j]);
+        reverse(a+n-1, a+m);
     }
     for (auto &i : a) cout << i << ' ';
 }
