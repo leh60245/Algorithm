@@ -7,31 +7,25 @@ int main()
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    stack<int> s;
-    list<char> result;
-    int n, x, num=1, i=0;
+    int n;
     cin >> n;
-    while (i < n)
-    {
-        cin >> x;
-        // cout << x << " is input" << '\n';
-        while (num<=n+1)
-        {
-            if (!s.empty() && s.top() == x)
-            {
-                s.pop();
-                result.push_back('-');
-                // cout << '-' << x << '\n';
-                break;
-            }
-            s.push(num);
-            result.push_back('+');
-            // cout << '+' << s.top() <<'\n';
-            num++;
+    stack<int> S;
+    int cnt = 1;
+    string ans;
+    while (n--) {
+        int t;
+        cin >> t;
+        while (cnt <= t) {
+            S.push(cnt++);
+            ans += "+\n";
         }
-        i++;
+        if (S.top() != t) {
+            cout << "NO\n";
+            return 0;
+        }
+        S.pop();
+        ans += "-\n";
     }
-    if (!s.empty()) cout << "NO";
-    else {for (char i:result) cout << i << '\n';}
+    cout << ans;
 
 }
