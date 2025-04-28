@@ -17,31 +17,27 @@ using vvi = vector<vi>;
 using pqi = priority_queue<int, vi, greater<>>;
 
 int N, M;
-unordered_map<int, pqi> graph;
+vvi graph;
 vi indegree;
 vi result;
 
-void dfs()
+void bfs()
 {
     pqi q;
 
-    for (int i = 1 ; i <= N ; i++)
+    for (int i = 1; i <= N; i++)
         if (indegree[i] == 0) q.push(i);
 
     while (!q.empty())
     {
-        int cn = q.top(); q.pop();
+        int cn = q.top();
+        q.pop();
         result.push_back(cn);
-        pqi& c_q = graph[cn];
-        while (!c_q.empty())
+        for (const int& nn : graph[cn])
         {
-            int nn = c_q.top(); c_q.pop();
             indegree[nn]--;
             if (indegree[nn] == 0)
-            {
                 q.push(nn);
-            }
-
         }
     }
 }
@@ -51,15 +47,17 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cin >> N >> M;
-    indegree.resize(N+1);
-    for (int m = 0 ; m < M ; m++)
+    graph.resize(N+1);
+    indegree.resize(N + 1);
+    for (int m = 0; m < M; m++)
     {
-        int a, b; cin >> a >> b;
-        graph[a].push(b);
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
         indegree[b]++;
     }
 
-    dfs();
+    bfs();
 
     for (auto& v : result) cout << v << ' ';
 }
