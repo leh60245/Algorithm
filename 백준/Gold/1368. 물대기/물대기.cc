@@ -1,60 +1,62 @@
-#include <bits/stdc++.h>
+// main.cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 using vi = vector<int>;
-using vvi = vector<vi>;
-using tiii = tuple<int, int, int>;
+using edge = tuple<int, int, int>;
 
-int find(int x, vi& arr)
-{
-    if (arr[x] < 0)
-        return x;
-    return arr[x] = find(arr[x], arr);
+int N;
+vector<edge> edges;
+vi parents;
+
+int find(int x) {
+    if (parents[x] < 0) return x;
+    return parents[x] = find(parents[x]);
 }
 
-bool uni(int u, int v, vi& arr)
-{
-    u = find(u, arr);
-    v = find(v, arr);
-    if (u == v)
-        return false;
-    if (arr[v] < arr[u])
-        swap(u, v);
-    if (arr[u] == arr[v])
-        arr[u]--;
-    arr[v] = u;
+bool uni(int u, int v) {
+    int pu = find(u);
+    int pv = find(v);
+
+    if (pu == pv) return false;
+    if (parents[pu] == parents[pv]) parents[pu]--;
+    if (parents[pu] < parents[pv]) parents[pv] = pu;
+    else parents[pu] = pv;
     return true;
 }
 
-int main()
-{
+
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int N;
-    cin >> N; // 논의 수
-    vi arr(N + 1, -1);
-    vector<tiii> edges; // i번과 j번 논을 연결하는데 드는 비용
-    for (int i = 1; i <= N; i++) // 우물 파는 비용
-    {
-        int c;
-        cin >> c;
-        edges.push_back({c, 0, i});
+    cin >> N;
+    parents.resize(N + 1, -1);
+
+    for (int i = 1; i <= N ; i++) {
+        int w;
+        cin >> w;
+        edges.emplace_back(w, i, 0);
     }
-    for (int i = 1; i <= N; i++)
-    {
-        for (int j = 1; j <= N; j++)
-        {
-            int c; cin >> c;
-            if (i < j)
-                edges.push_back({c, i, j});
+    for (int i = 1; i <= N; i++) {
+        for (int j = 1; j <= N; j++) {
+            int cost;
+            cin >> cost;
+            if (i >= j) continue;
+            edges.emplace_back(cost, i, j);
         }
     }
+
     sort(edges.begin(), edges.end());
-    int answer = 0;
-    for (auto [c, n1, n2] : edges)
-    {
-        if (!uni(n1, n2, arr)) continue;
-        answer += c;
+
+    int ans = 0;
+    for (auto [cost, a, b]: edges) {
+        if (!uni(a, b)) continue;
+        ans += cost;
     }
-    cout << answer;
+
+    cout << ans;
+    return 0;
 }
