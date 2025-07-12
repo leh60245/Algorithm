@@ -1,56 +1,49 @@
-#include <bits/stdc++.h>
+// main.cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
 using vi = vector<int>;
-using vvi = vector<vi>;
-using tiii = tuple<int, int, int>;
+using edge = tuple<int, int>;
 
-int find(int x, vi& arr)
-{
-    if (arr[x] < 0)
-        return x;
-    return arr[x] = find(arr[x], arr);
+
+int find(int x, vi &parents) {
+    if (parents[x] < 0) return x;
+    return parents[x] = find(parents[x], parents);
 }
 
-bool uni(int u, int v, vi& arr)
-{
-    u = find(u, arr);
-    v = find(v, arr);
-    if (u == v)
-        return false;
-    if (arr[v] < arr[u])
-        swap(u, v);
-    if (arr[u] == arr[v])
-        arr[u]--;
-    arr[v] = u;
+bool uni(int u, int v, vi &parents) {
+    int pu = find(u, parents);
+    int pv = find(v, parents);
+
+    if (pu == pv) return false;
+    if (parents[pu] == parents[pv]) parents[pu]--;
+    if (parents[pu] < parents[pv]) parents[pv] = pu;
+    else parents[pu] = pv;
     return true;
 }
 
-int main()
-{
+
+int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
     int T;
     cin >> T;
-    while (T--)
-    {
+    while (T--){
         int N, M;
         cin >> N >> M;
-        vi arr(N + 1, -1);
-        vector<tiii> cost;
-        for (int m = 0; m < M; m++)
-        {
-            int n1, n2;
-            cin >> n1 >> n2;
-            cost.push_back({1, n1, n2});
+
+        for (int i = 0 ; i < M ; i++){
+            int a, b;
+            cin >> a >> b;
         }
-        int answer = 0;
-        sort(cost.begin(), cost.end());
-        for (auto& [c, n1, n2] : cost)
-        {
-            if (!uni(n1, n2, arr)) continue;
-            answer += c;
-        }
-        cout << answer << '\n';
+        
+        cout << (N-1) << '\n';
+
     }
+
+
+    return 0;
 }
