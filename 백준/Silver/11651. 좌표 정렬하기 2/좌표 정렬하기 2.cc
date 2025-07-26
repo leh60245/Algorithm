@@ -1,22 +1,27 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
 using namespace std;
-using vi = vector<int>;
-using vvi = vector<vi>;
 
-int main()
-{
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-    cout.tie(nullptr);
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
 
-    int N; cin >> N;
-    vector<pair<int, int>> arr(N);
-    for (int i = 0 ; i < N ; i++) cin >> arr[i].first >> arr[i].second;
-    sort(arr.begin(), arr.end(), [](const auto& a, const auto& b)
-    {
-        if (a.second != b.second) return a.second < b.second;
-        return a.first < b.first;
+    int N;
+    cin >> N;
+    vector<pair<int, int> > point;
+    for (int i = 0; i < N; ++i) {
+        int x, y;
+        cin >> x >> y;
+        point.emplace_back(x, y);
+    }
+    stable_sort(point.begin(), point.end(), [](const auto &a, const auto &b) {
+        if (a.second == b.second) return a.first < b.first;
+        return a.second < b.second;
     });
-    for (int i = 0 ; i < N ; i++) cout << arr[i].first << ' ' << arr[i].second << '\n';
 
+    for (auto [x, y]: point) {
+        cout << x << ' ' << y << '\n';
+    }
 }
