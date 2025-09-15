@@ -1,42 +1,43 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
-
 
 int N, M;
 vector<int> arr;
-vector<int> ans;
-vector<int> vis;
+int answer[10];
+bool visited[10];
 
-void permutation(int depth)
-{
-    if (depth == M)
-    {
-        for (int i = 0 ; i<M ; i++) cout << ans[i] << ' ';
-        cout << '\n';
-        return;
-    }
-    for (int n=0 ; n<N ; n++)
-    {
-        if (vis[n]) continue;
-        vis[n] = 1;
-        ans[depth] = arr[n];
-        permutation(depth+1);
-        vis[n] = 0;
-    }
-
+void backtraking(int depth) {
+	if (depth == M) {
+		for (int i = 0; i < M; i++) cout << answer[i] << ' ';
+		cout << '\n';
+		return;
+	}
+	for (int i = 0; i < N; i++) {
+		if (!visited[i]) {
+			visited[i] = true;
+			answer[depth] = arr[i];
+			backtraking(depth + 1);
+			visited[i] = false;
+		}
+	}
+	return;
 }
 
-int main()
-{
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+int main() {
+	ios::sync_with_stdio(0);
+	cin.tie(0);
+	
+	cin >> N >> M;
+	for (int i = 0; i < N; i++) {
+		int x;
+		cin >> x;
+		arr.push_back(x);
+	}
+	sort(arr.begin(), arr.end());
+	
+	backtraking(0);
 
-    cin >> N >> M;
-    arr.resize(N, 0);
-    ans.resize(N, 0);
-    vis.resize(N, 0);
-    for (int n=0 ; n<N ; n++) cin >> arr[n];
-    sort(arr.begin(), arr.end());
-
-    permutation(0);
+	return 0;
 }
