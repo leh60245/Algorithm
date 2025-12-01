@@ -11,28 +11,29 @@ while True:
     N = tmp[0]
     if N == 0:
         break
-    arr1 = [0] * 20001
-    set1 = set()
-    for v in tmp[1:]:
-        arr1[v] = 1
-        set1.add(v)
+    arr1 = tmp[1:]
     tmp = list(map(int, input().split()))
-    arr2 = [0] * 20001
-    set2 = set()
-    for v in tmp[1:]:
-        arr2[v] = 1
-        set2.add(v)
+    M = tmp[0]
+    arr2 = tmp[1:]
 
-    cross_points = set1 & set2
     answer = 0
+    p, q = 0, 0
     sum1, sum2 = 0, 0
-    for number in range(-10000, 10001):
-        if number in cross_points:
-            answer += max(sum1, sum2) + number
+    while p < N and q < M:
+        if arr1[p] == arr2[q]:
+            answer += max(sum1, sum2) + arr1[p]
             sum1, sum2 = 0, 0
+            p += 1
+            q += 1
+        elif arr1[p] < arr2[q]:
+            sum1 += arr1[p]
+            p += 1
         else:
-            if arr1[number]: sum1 += number
-            if arr2[number]: sum2 += number
+            sum2 += arr2[q]
+            q += 1
+
+    sum1 += sum(arr1[p:])
+    sum2 += sum(arr2[q:])
+
     answer += max(sum1, sum2)
     print(answer)
-
